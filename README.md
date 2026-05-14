@@ -347,14 +347,6 @@ pnpm build
 
 可以，但需要明确主线。学术型可以包含原型展示，工程型也可以包含实验分析；区别在于答辩的主要证据闭环不同。
 
-### 为什么不上传往届模板和个人论文材料？
-
-往届 PPT 和个人论文材料可能包含隐私、学校内部格式、未授权图片或未公开研究内容。公开仓库只保留可复用的 skills、主题和项目配置，更安全也更适合复用。
-
-### 为什么不直接修改 open-slide 默认 skill？
-
-open-slide 默认 skills 由 `@open-slide/core` 管理，运行 `pnpm sync:skills` 时可能被覆盖。本项目把硕士答辩能力作为本地新增 skills，便于公开维护和长期复用。
-
 ## 致谢
 
 本项目基于 [open-slide](https://github.com/1weiho/open-slide) 构建。感谢 open-slide 提供 React 幻灯片运行时、主题预览、本地开发服务和静态构建能力。
