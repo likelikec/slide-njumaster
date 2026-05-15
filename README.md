@@ -301,6 +301,9 @@ git status --short
 ```
 
 确认没有误提交个人论文、往届 PPT、实验原始数据、导师意见、学校内部文件或未授权图片。
+主题封面默认使用 `themes/assets/nju-cover-campus.png` 和
+`themes/assets/nju-wordmark.png` 作为南京大学封面示例素材；如果公开发布时
+无法确认图片授权，请替换为你有权公开使用的校园照片或校名标识。
 
 ## 部署
 

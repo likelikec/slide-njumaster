@@ -1,22 +1,32 @@
 import type React from "react";
 import type { DesignSystem, Page } from "@open-slide/core";
 
+const displayFont =
+  '"Microsoft YaHei", "微软雅黑", "Microsoft YaHei UI", "Noto Sans CJK SC", "PingFang SC", sans-serif';
+const bodyFont =
+  '"Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", "PingFang SC", Arial, sans-serif';
+
 export const design: DesignSystem = {
-  palette: { bg: "#F8F6FA", text: "#17151A", accent: "#69075A" },
+  palette: { bg: "#F8F6FA", text: "#17151A", accent: "#6E0F6D" },
   fonts: {
-    display:
-      'Georgia, "Times New Roman", "Noto Serif CJK SC", "Songti SC", serif',
-    body: '"Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, sans-serif',
+    display: displayFont,
+    body: bodyFont,
   },
-  typeScale: { hero: 136, body: 32 },
+  typeScale: { hero: 84, body: 32 },
   radius: 8,
 };
 
+const campusPhoto = new URL("./assets/nju-cover-campus.png", import.meta.url).href;
+const njuWordmark = new URL("./assets/nju-wordmark.png", import.meta.url).href;
+
+const primary = "#6E0F6D";
+const primaryDark = "#540049";
+const primarySoft = "#E6D3E6";
+const ink = "#17151A";
 const inkSoft = "#4A4650";
 const inkFaint = "#9D9EA0";
 const rule = "#D8CEDF";
 const panel = "#FFFFFF";
-const primarySoft = "#EFE5F1";
 const systemBlue = "#0B4F6C";
 const success = "#2F6F4F";
 const risk = "#9A4D2F";
@@ -30,250 +40,340 @@ const pageBase = {
   fontFamily: "var(--osd-font-body)",
   boxSizing: "border-box",
   overflow: "hidden",
-} as const;
+} satisfies React.CSSProperties;
 
-const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <div
+const CalendarIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+    <rect x="5" y="7" width="20" height="18" rx="3" fill="none" stroke="#fff" strokeWidth="2.2" />
+    <path d="M10 4v6M20 4v6M6 13h18" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M12 18h6v4" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+  </svg>
+);
+
+const PresenterIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+    <circle cx="12" cy="10" r="4" fill="none" stroke="#fff" strokeWidth="2.2" />
+    <path d="M5 25c1.4-5 4-7 7-7s5.6 2 7 7" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M22 9h4v12h-4" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" />
+  </svg>
+);
+
+const InfoItem = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+    <div
+      style={{
+        width: 62,
+        height: 62,
+        borderRadius: 31,
+        background: primary,
+        display: "grid",
+        placeItems: "center",
+      }}
+    >
+      {icon}
+    </div>
+    <div style={{ display: "flex", gap: 18, alignItems: "baseline", color: primary }}>
+      <span style={{ fontSize: 30, fontWeight: 400 }}>{label}</span>
+      <span style={{ fontSize: 30, fontWeight: 300 }}>{value}</span>
+    </div>
+  </div>
+);
+
+const CoverMaster = ({
+  thesisTitle,
+  date,
+  presenter,
+}: {
+  thesisTitle: string;
+  date: string;
+  presenter: string;
+}) => (
+  <div style={{ ...pageBase, background: "#FFFFFF" }}>
+    <div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        width: 580,
+        height: 580,
+        background: primaryDark,
+        clipPath: "polygon(0 0, 100% 0, 0 100%)",
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        right: 0,
+        bottom: 0,
+        width: 560,
+        height: 560,
+        background: primaryDark,
+        clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        left: 36,
+        top: 118,
+        width: 1848,
+        height: 848,
+        boxShadow: "0 28px 32px rgba(0, 0, 0, 0.26)",
+        overflow: "hidden",
+        background: "#fff",
+      }}
+    >
+      <img
+        src={campusPhoto}
+        alt=""
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
+      <div style={{ position: "absolute", inset: 0, background: "rgba(255, 255, 255, 0.72)" }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: 540,
+          height: 540,
+          background: "rgba(230, 211, 230, 0.82)",
+          clipPath: "polygon(0 0, 100% 0, 0 100%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: 0,
+          bottom: 0,
+          width: 520,
+          height: 520,
+          background: "rgba(230, 211, 230, 0.86)",
+          clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+        }}
+      />
+    </div>
+    <main
+      style={{
+        position: "absolute",
+        left: 260,
+        right: 260,
+        top: 214,
+        height: 590,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        color: primary,
+      }}
+    >
+      <img src={njuWordmark} alt="南京大学" style={{ width: 520, height: "auto", objectFit: "contain" }} />
+      <h1
+        style={{
+          margin: "76px 0 0",
+          fontFamily: displayFont,
+          fontSize: 82,
+          lineHeight: 1.08,
+          fontWeight: 300,
+          color: primary,
+          borderBottom: `3px solid ${primary}`,
+          paddingBottom: 8,
+        }}
+      >
+        毕业答辩
+      </h1>
+      <p
+        style={{
+          margin: "48px 0 0",
+          fontFamily: bodyFont,
+          fontSize: 34,
+          lineHeight: 1.45,
+          fontWeight: 300,
+          textAlign: "center",
+          color: primary,
+          maxWidth: 1120,
+        }}
+      >
+        {thesisTitle}
+      </p>
+      <div style={{ display: "flex", gap: 66, alignItems: "center", marginTop: 62 }}>
+        <InfoItem icon={<CalendarIcon />} label="日期：" value={date} />
+        <InfoItem icon={<PresenterIcon />} label="答辩人：" value={presenter} />
+      </div>
+    </main>
+  </div>
+);
+
+const PageHeader = ({
+  part,
+  title,
+  section,
+}: {
+  part: string;
+  title: string;
+  section: string;
+}) => (
+  <header style={{ position: "relative", paddingTop: 54 }}>
+    <div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 44,
+        width: 128,
+        height: 42,
+        background: primary,
+        color: "#fff",
+        display: "grid",
+        placeItems: "center",
+        fontSize: 24,
+        fontWeight: 700,
+      }}
+    >
+      {part}
+    </div>
+    <div style={{ marginLeft: 158, color: primary, fontSize: 24, fontWeight: 700 }}>{section}</div>
+    <h2
+      style={{
+        margin: "16px 0 0 158px",
+        fontFamily: displayFont,
+        fontSize: 58,
+        lineHeight: 1.16,
+        fontWeight: 600,
+        color: ink,
+      }}
+    >
+      {title}
+    </h2>
+  </header>
+);
+
+const Footer = ({ part, page, total }: { part: string; page: number; total: number }) => (
+  <footer
     style={{
-      display: "flex",
-      alignItems: "center",
-      gap: 16,
-      color: "var(--osd-accent)",
-      fontFamily: "var(--osd-font-display)",
-      fontSize: 24,
-      fontWeight: 700,
-      letterSpacing: "0.1em",
-      textTransform: "uppercase",
+      position: "absolute",
+      left: 120,
+      right: 120,
+      bottom: 34,
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      color: inkFaint,
+      fontSize: 18,
+      borderTop: `1px solid ${rule}`,
+      paddingTop: 14,
     }}
   >
-    <span style={{ width: 54, height: 4, background: "var(--osd-accent)" }} />
+    <span>{part}</span>
+    <span style={{ textAlign: "center" }}>南京大学硕士论文答辩</span>
+    <span style={{ textAlign: "right" }}>{page} / {total}</span>
+  </footer>
+);
+
+const ClaimStrip = ({ children }: { children: React.ReactNode }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: 120,
+      right: 120,
+      bottom: 94,
+      minHeight: 70,
+      background: primary,
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      padding: "0 34px",
+      fontSize: 28,
+      lineHeight: 1.35,
+      fontWeight: 500,
+    }}
+  >
     {children}
   </div>
 );
 
-const Footer = ({
-  part,
-  page,
-  total,
-}: {
-  part: string;
-  page: number;
-  total: number;
-}) => (
-  <div
-    style={{
-      position: "absolute",
-      left: 128,
-      right: 128,
-      bottom: 48,
-      borderTop: `2px solid ${rule}`,
-      paddingTop: 16,
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr",
-      alignItems: "center",
-      color: inkFaint,
-      fontSize: 18,
-      lineHeight: 1.3,
-    }}
-  >
-    <span>{part}</span>
-    <span style={{ textAlign: "center" }}>工程型硕士学位论文答辩</span>
-    <span style={{ textAlign: "right" }}>
-      {page} / {total}
-    </span>
-  </div>
-);
-
 const CoverSlide: Page = () => (
-  <div
-    style={{
-      ...pageBase,
-      padding: "132px 144px",
-      display: "grid",
-      gridTemplateColumns: "1.08fr 0.92fr",
-      gap: 72,
-      alignItems: "center",
-    }}
-  >
-    <div>
-      <Eyebrow>Engineering Thesis Defense</Eyebrow>
-      <h1
-        style={{
-          fontFamily: "var(--osd-font-display)",
-          fontSize: 112,
-          lineHeight: 1.08,
-          margin: "40px 0 0",
-          color: "var(--osd-accent)",
-        }}
-      >
-        基于异地多活架构的授权系统设计与实现
-      </h1>
-      <p style={{ fontSize: 32, lineHeight: 1.55, color: inkSoft }}>
-        答辩人：张三　指导教师：李四 教授
-        <br />
-        软件学院 · 2026年5月
-      </p>
-    </div>
-    <div
-      style={{
-        background: panel,
-        border: `2px solid ${rule}`,
-        padding: 46,
-        minHeight: 520,
-        display: "grid",
-        gridTemplateRows: "auto 1fr auto",
-      }}
-    >
-      <div
-        style={{
-          color: "var(--osd-accent)",
-          fontFamily: "var(--osd-font-display)",
-          fontSize: 30,
-          fontWeight: 700,
-        }}
-      >
-        NANJING UNIVERSITY
-      </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: 22,
-          alignContent: "center",
-        }}
-      >
-        {["需求", "设计", "实现", "测试"].map((label, index) => (
-          <div
-            key={label}
-            style={{
-              border: `2px solid ${index === 0 ? "var(--osd-accent)" : rule}`,
-              background: index === 0 ? primarySoft : "#FAF9FB",
-              padding: 28,
-              minHeight: 120,
-              fontSize: 34,
-              fontWeight: 700,
-              color: index === 0 ? "var(--osd-accent)" : inkSoft,
-            }}
-          >
-            {label}
-          </div>
-        ))}
-      </div>
-      <div style={{ color: inkFaint, fontSize: 22 }}>
-        工程型答辩强调需求、设计、实现、测试的闭环证据。
-      </div>
-    </div>
-  </div>
+  <CoverMaster
+    thesisTitle="基于异地多活架构的 OAuth 2.1 授权系统的设计与实现"
+    date="2026.04.26"
+    presenter="卢同学"
+  />
 );
 
 const ArchitectureSlide: Page = () => {
-  const modules = [
-    ["接入层", "协议适配 / API 网关"],
-    ["业务层", "授权、路由、审计核心模块"],
-    ["数据层", "状态存储 / 令牌 / 日志"],
-    ["运维层", "监控、配置、容灾切换"],
+  const lanes = [
+    ["接入层", "统一入口、限流、身份上下文"],
+    ["授权核心", "授权码、令牌、会话与策略"],
+    ["多活协调", "跨地域状态同步与故障切换"],
+    ["观测测试", "指标、日志、压测与验收"],
   ];
 
   return (
-    <div style={{ ...pageBase, padding: "112px 128px 132px" }}>
-      <Eyebrow>System Design</Eyebrow>
-      <h2
-        style={{
-          fontFamily: "var(--osd-font-display)",
-          fontSize: 62,
-          lineHeight: 1.16,
-          color: "var(--osd-accent)",
-          margin: "28px 0 42px",
-        }}
-      >
-        系统设计页要同时说明边界、职责与关键数据流
-      </h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.2fr 0.8fr",
-          gap: 52,
-          alignItems: "stretch",
-        }}
-      >
-        <div
-          style={{
-            background: panel,
-            border: `2px solid ${rule}`,
-            padding: 42,
-          }}
-        >
-          <div style={{ display: "grid", gap: 24 }}>
-            {modules.map(([name, note], index) => (
-              <div
-                key={name}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "180px 1fr",
-                  alignItems: "center",
-                  minHeight: 104,
-                  border: `2px solid ${index === 1 ? "var(--osd-accent)" : rule}`,
-                  background: index === 1 ? primarySoft : "#FAF9FB",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "0 26px",
-                    fontSize: 30,
-                    fontWeight: 800,
-                    color: index === 1 ? "var(--osd-accent)" : systemBlue,
-                  }}
-                >
-                  {name}
-                </div>
-                <div
-                  style={{
-                    borderLeft: `2px solid ${rule}`,
-                    padding: "0 30px",
-                    fontSize: 28,
-                    color: inkSoft,
-                  }}
-                >
-                  {note}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div
-            style={{
-              marginTop: 30,
-              color: inkFaint,
-              fontSize: 22,
-              lineHeight: 1.4,
-            }}
-          >
-            真实答辩中替换为论文系统架构图，并标注当前页展开的模块。
-          </div>
-        </div>
-        <div style={{ display: "grid", gap: 24 }}>
-          {[
-            ["设计视图", "用例、逻辑、过程、开发、物理视图必须互相对齐。"],
-            ["工程取舍", "说明为什么采用该机制，以及它解决哪个约束。"],
-            ["验证入口", "每个关键设计最终要能落到测试证据。"],
-          ].map(([title, note]) => (
+    <div style={{ ...pageBase, padding: "0 120px 180px" }}>
+      <PageHeader part="02" section="System Design" title="系统设计页用架构图说明边界、路径和工程取舍" />
+      <div style={{ display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: 34, marginTop: 50 }}>
+        <div style={{ background: panel, border: `2px solid ${rule}`, padding: 30, minHeight: 560 }}>
+          <div style={{ color: primary, fontSize: 30, fontWeight: 700, marginBottom: 30 }}>五视图闭环</div>
+          {["需求视图", "用例视图", "逻辑视图", "过程视图", "部署视图"].map((item, index) => (
             <div
-              key={title}
+              key={item}
               style={{
-                background: panel,
-                borderLeft: `8px solid ${systemBlue}`,
-                padding: "30px 34px",
+                display: "flex",
+                alignItems: "center",
+                gap: 20,
+                minHeight: 78,
+                borderBottom: index === 4 ? "none" : `1px solid ${rule}`,
               }}
             >
-              <h3 style={{ margin: 0, fontSize: 32, color: systemBlue }}>
-                {title}
-              </h3>
-              <p style={{ margin: "16px 0 0", fontSize: 26, lineHeight: 1.45 }}>
-                {note}
-              </p>
+              <div
+                style={{
+                  width: 46,
+                  height: 46,
+                  borderRadius: 23,
+                  background: index === 2 ? primary : primarySoft,
+                  color: index === 2 ? "#fff" : primary,
+                  display: "grid",
+                  placeItems: "center",
+                  fontSize: 22,
+                  fontWeight: 700,
+                }}
+              >
+                {index + 1}
+              </div>
+              <div style={{ fontSize: 30, color: ink, fontWeight: 600 }}>{item}</div>
             </div>
           ))}
         </div>
+        <div style={{ background: panel, border: `2px solid ${rule}`, padding: 30, minHeight: 560 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, alignItems: "stretch" }}>
+            {lanes.map(([name, desc], index) => (
+              <div
+                key={name}
+                style={{
+                  minHeight: 380,
+                  border: `2px solid ${index === 1 ? primary : rule}`,
+                  background: index === 1 ? primarySoft : "#FAF9FB",
+                  padding: 22,
+                  display: "grid",
+                  gridTemplateRows: "auto 1fr auto",
+                }}
+              >
+                <div style={{ color: index === 1 ? primary : inkSoft, fontSize: 28, fontWeight: 700 }}>{name}</div>
+                <div style={{ alignSelf: "center", height: 96, borderLeft: `5px solid ${index === 2 ? systemBlue : primary}`, marginLeft: 12 }} />
+                <p style={{ color: inkSoft, fontSize: 23, lineHeight: 1.35, margin: 0 }}>{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 28, background: "#F4EFF6", border: `1px solid ${rule}`, padding: 22, fontSize: 26, color: inkSoft }}>
+            工程型页面要同时展示系统边界、运行路径、模块职责与取舍，而不是只放一张装饰性框图。
+          </div>
+        </div>
       </div>
+      <ClaimStrip>设计页必须回答“为什么这样设计”，并在后续实现页和测试页中被验证。</ClaimStrip>
       <Footer part="系统设计" page={2} total={3} />
     </div>
   );
@@ -281,69 +381,65 @@ const ArchitectureSlide: Page = () => {
 
 const TestSlide: Page = () => {
   const rows = [
-    ["功能测试", "42 个核心用例", "通过", success],
-    ["性能测试", "峰值负载与延迟", "达标", success],
-    ["容灾测试", "跨区切换演练", "待补充", risk],
+    ["FR-01", "授权码流程", "18 个用例", "通过", success],
+    ["NFR-02", "跨地域切换", "RTO < 30s", "通过", success],
+    ["NFR-03", "高并发授权", "P95 < 200ms", "达标", success],
+    ["Risk-01", "弱网重试", "异常注入", "需优化", risk],
   ];
 
   return (
-    <div style={{ ...pageBase, padding: "112px 128px 132px" }}>
-      <Eyebrow>System Testing</Eyebrow>
-      <h2
-        style={{
-          fontFamily: "var(--osd-font-display)",
-          fontSize: 62,
-          lineHeight: 1.16,
-          color: "var(--osd-accent)",
-          margin: "28px 0 48px",
-        }}
-      >
-        测试页必须回答“设计目标是否被工程证据验证”
-      </h2>
-      <div
-        style={{
-          background: panel,
-          border: `2px solid ${rule}`,
-          padding: "40px 48px",
-        }}
-      >
+    <div style={{ ...pageBase, padding: "0 120px 180px" }}>
+      <PageHeader part="04" section="System Testing" title="测试页把需求、指标、环境和验收结论放在同一张证据表里" />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 22, marginTop: 46 }}>
+        {[
+          ["测试环境", "双地域部署、统一网关、独立数据库实例"],
+          ["测试数据", "授权码、刷新令牌、异常会话与并发请求"],
+          ["验收口径", "功能通过率、P95 延迟、故障切换时间"],
+        ].map(([label, text]) => (
+          <div key={label} style={{ background: panel, border: `2px solid ${rule}`, padding: 26, minHeight: 140 }}>
+            <div style={{ color: primary, fontSize: 25, fontWeight: 700 }}>{label}</div>
+            <div style={{ marginTop: 14, color: ink, fontSize: 27, lineHeight: 1.35 }}>{text}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ background: panel, border: `2px solid ${rule}`, marginTop: 26, padding: 30 }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "260px 1fr 160px",
-            borderBottom: `2px solid ${rule}`,
-            paddingBottom: 18,
-            color: inkFaint,
-            fontSize: 22,
+            gridTemplateColumns: "160px 1.2fr 1fr 140px",
+            color: primary,
+            fontSize: 24,
+            fontWeight: 700,
+            borderBottom: `2px solid ${primary}`,
+            paddingBottom: 16,
           }}
         >
-          <div>测试类型</div>
-          <div>证据对象</div>
-          <div>结论</div>
+          <span>需求编号</span>
+          <span>测试对象</span>
+          <span>指标/样本</span>
+          <span>结论</span>
         </div>
-        {rows.map(([type, evidence, result, color]) => (
+        {rows.map(([id, target, metric, result, color]) => (
           <div
-            key={type}
+            key={id}
             style={{
               display: "grid",
-              gridTemplateColumns: "260px 1fr 160px",
+              gridTemplateColumns: "160px 1.2fr 1fr 140px",
               alignItems: "center",
-              minHeight: 104,
-              borderBottom: `2px solid ${rule}`,
-              fontSize: 28,
+              minHeight: 72,
+              borderBottom: `1px solid ${rule}`,
+              fontSize: 25,
+              color: ink,
             }}
           >
-            <div style={{ fontWeight: 800, color: "var(--osd-accent)" }}>
-              {type}
-            </div>
-            <div style={{ color: inkSoft }}>{evidence}</div>
-            <div style={{ color, fontWeight: 800 }}>{result}</div>
+            <span style={{ fontWeight: 700, color: primary }}>{id}</span>
+            <span>{target}</span>
+            <span style={{ color: inkSoft }}>{metric}</span>
+            <span style={{ color: String(color), fontWeight: 700 }}>{result}</span>
           </div>
         ))}
-        <p style={{ margin: "28px 0 0", color: inkFaint, fontSize: 22 }}>
-          示例文字仅展示主题语法；正式生成时必须替换为真实测试环境、指标、单位与结论。
-        </p>
       </div>
+      <ClaimStrip>工程型总结必须能回指需求、设计、实现和测试证据，不能只写“完成了系统”。</ClaimStrip>
       <Footer part="系统测试" page={3} total={3} />
     </div>
   );

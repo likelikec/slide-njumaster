@@ -1,24 +1,32 @@
 import type React from "react";
 import type { DesignSystem, Page } from "@open-slide/core";
 
+const displayFont =
+  '"Microsoft YaHei", "微软雅黑", "Microsoft YaHei UI", "Noto Sans CJK SC", "PingFang SC", sans-serif';
+const bodyFont =
+  '"Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", "PingFang SC", Arial, sans-serif';
+
 export const design: DesignSystem = {
-  palette: { bg: "#FBFAFC", text: "#1A171C", accent: "#69075A" },
+  palette: { bg: "#F8F6FA", text: "#1A171C", accent: "#6E0F6D" },
   fonts: {
-    display:
-      'Georgia, "Times New Roman", "Noto Serif CJK SC", "Songti SC", serif',
-    body: '"Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, sans-serif',
+    display: displayFont,
+    body: bodyFont,
   },
-  typeScale: { hero: 148, body: 32 },
+  typeScale: { hero: 84, body: 32 },
   radius: 8,
 };
 
-const inkSoft = "#4C4650";
+const campusPhoto = new URL("./assets/nju-cover-campus.png", import.meta.url).href;
+const njuWordmark = new URL("./assets/nju-wordmark.png", import.meta.url).href;
+
+const primary = "#6E0F6D";
+const primaryDark = "#540049";
+const primarySoft = "#E6D3E6";
+const ink = "#1A171C";
+const inkSoft = "#4A4650";
 const inkFaint = "#9D9EA0";
-const rule = "#D9D0DF";
+const rule = "#D8CEDF";
 const panel = "#FFFFFF";
-const primarySoft = "#EEE3F0";
-const positive = "#2F6F4F";
-const caution = "#9A6A2F";
 
 const pageBase = {
   width: "100%",
@@ -29,305 +37,369 @@ const pageBase = {
   fontFamily: "var(--osd-font-body)",
   boxSizing: "border-box",
   overflow: "hidden",
-} as const;
+} satisfies React.CSSProperties;
 
-const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: 18,
-      color: "var(--osd-accent)",
-      fontFamily: "var(--osd-font-display)",
-      fontSize: 24,
-      fontWeight: 700,
-      letterSpacing: "0.12em",
-      textTransform: "uppercase",
-    }}
-  >
-    <span style={{ width: 56, height: 4, background: "var(--osd-accent)" }} />
-    {children}
-  </div>
+const CalendarIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+    <rect x="5" y="7" width="20" height="18" rx="3" fill="none" stroke="#fff" strokeWidth="2.2" />
+    <path d="M10 4v6M20 4v6M6 13h18" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M12 18h6v4" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+  </svg>
 );
 
-const Footer = ({
-  part,
-  page,
-  total,
+const PresenterIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+    <circle cx="12" cy="10" r="4" fill="none" stroke="#fff" strokeWidth="2.2" />
+    <path d="M5 25c1.4-5 4-7 7-7s5.6 2 7 7" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M22 9h4v12h-4" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" />
+  </svg>
+);
+
+const InfoItem = ({
+  icon,
+  label,
+  value,
 }: {
-  part: string;
-  page: number;
-  total: number;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
 }) => (
-  <div
-    style={{
-      position: "absolute",
-      left: 128,
-      right: 128,
-      bottom: 48,
-      borderTop: `2px solid ${rule}`,
-      paddingTop: 16,
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr",
-      alignItems: "center",
-      color: inkFaint,
-      fontSize: 18,
-      lineHeight: 1.3,
-    }}
-  >
-    <span>{part}</span>
-    <span style={{ textAlign: "center" }}>硕士学位论文答辩</span>
-    <span style={{ textAlign: "right" }}>
-      {page} / {total}
-    </span>
+  <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+    <div
+      style={{
+        width: 62,
+        height: 62,
+        borderRadius: 31,
+        background: primary,
+        display: "grid",
+        placeItems: "center",
+      }}
+    >
+      {icon}
+    </div>
+    <div style={{ display: "flex", gap: 18, alignItems: "baseline", color: primary }}>
+      <span style={{ fontSize: 30, fontWeight: 400 }}>{label}</span>
+      <span style={{ fontSize: 30, fontWeight: 300 }}>{value}</span>
+    </div>
   </div>
 );
 
-const TitleSlide: Page = () => (
-  <div
-    style={{
-      ...pageBase,
-      padding: "136px 144px",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-    }}
-  >
+const CoverMaster = ({
+  thesisTitle,
+  date,
+  presenter,
+}: {
+  thesisTitle: string;
+  date: string;
+  presenter: string;
+}) => (
+  <div style={{ ...pageBase, background: "#FFFFFF" }}>
     <div
       style={{
         position: "absolute",
         left: 0,
         top: 0,
-        bottom: 0,
-        width: 36,
-        background: "var(--osd-accent)",
+        width: 580,
+        height: 580,
+        background: primaryDark,
+        clipPath: "polygon(0 0, 100% 0, 0 100%)",
       }}
     />
     <div
       style={{
         position: "absolute",
-        right: 144,
-        top: 112,
-        color: "var(--osd-accent)",
-        fontFamily: "var(--osd-font-display)",
-        fontSize: 30,
+        right: 0,
+        bottom: 0,
+        width: 560,
+        height: 560,
+        background: primaryDark,
+        clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        left: 36,
+        top: 118,
+        width: 1848,
+        height: 848,
+        boxShadow: "0 28px 32px rgba(0, 0, 0, 0.26)",
+        overflow: "hidden",
+        background: "#fff",
+      }}
+    >
+      <img
+        src={campusPhoto}
+        alt=""
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
+      <div style={{ position: "absolute", inset: 0, background: "rgba(255, 255, 255, 0.72)" }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: 540,
+          height: 540,
+          background: "rgba(230, 211, 230, 0.82)",
+          clipPath: "polygon(0 0, 100% 0, 0 100%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: 0,
+          bottom: 0,
+          width: 520,
+          height: 520,
+          background: "rgba(230, 211, 230, 0.86)",
+          clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+        }}
+      />
+    </div>
+    <main
+      style={{
+        position: "absolute",
+        left: 260,
+        right: 260,
+        top: 214,
+        height: 590,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        color: primary,
+      }}
+    >
+      <img src={njuWordmark} alt="南京大学" style={{ width: 520, height: "auto", objectFit: "contain" }} />
+      <h1
+        style={{
+          margin: "76px 0 0",
+          fontFamily: displayFont,
+          fontSize: 82,
+          lineHeight: 1.08,
+          fontWeight: 300,
+          color: primary,
+          borderBottom: `3px solid ${primary}`,
+          paddingBottom: 8,
+        }}
+      >
+        毕业答辩
+      </h1>
+      <p
+        style={{
+          margin: "48px 0 0",
+          fontFamily: bodyFont,
+          fontSize: 34,
+          lineHeight: 1.45,
+          fontWeight: 300,
+          textAlign: "center",
+          color: primary,
+          maxWidth: 1120,
+        }}
+      >
+        {thesisTitle}
+      </p>
+      <div style={{ display: "flex", gap: 66, alignItems: "center", marginTop: 62 }}>
+        <InfoItem icon={<CalendarIcon />} label="日期：" value={date} />
+        <InfoItem icon={<PresenterIcon />} label="答辩人：" value={presenter} />
+      </div>
+    </main>
+  </div>
+);
+
+const PageHeader = ({
+  part,
+  title,
+  section,
+}: {
+  part: string;
+  title: string;
+  section: string;
+}) => (
+  <header style={{ position: "relative", paddingTop: 54 }}>
+    <div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 44,
+        width: 128,
+        height: 42,
+        background: primary,
+        color: "#fff",
+        display: "grid",
+        placeItems: "center",
+        fontSize: 24,
         fontWeight: 700,
       }}
     >
-      NANJING UNIVERSITY
+      {part}
     </div>
-    <Eyebrow>Academic Thesis Defense</Eyebrow>
-    <h1
+    <div style={{ marginLeft: 158, color: primary, fontSize: 24, fontWeight: 700 }}>{section}</div>
+    <h2
       style={{
-        fontFamily: "var(--osd-font-display)",
-        fontSize: 132,
-        lineHeight: 1.08,
-        fontWeight: 800,
-        margin: "42px 0 0",
-        maxWidth: 1240,
-        color: "var(--osd-accent)",
+        margin: "16px 0 0 158px",
+        fontFamily: displayFont,
+        fontSize: 58,
+        lineHeight: 1.16,
+        fontWeight: 600,
+        color: ink,
       }}
     >
-      面向复杂软件系统的可信智能方法研究
-    </h1>
-    <div
-      style={{
-        width: 780,
-        height: 3,
-        background: "var(--osd-accent)",
-        marginTop: 48,
-      }}
-    />
-    <p
-      style={{
-        fontSize: 32,
-        lineHeight: 1.55,
-        margin: "56px 0 0",
-        color: inkSoft,
-      }}
-    >
-      答辩人：张三　指导教师：李四 教授
-      <br />
-      软件学院 · 2026年5月
-    </p>
+      {title}
+    </h2>
+  </header>
+);
+
+const Footer = ({ part, page, total }: { part: string; page: number; total: number }) => (
+  <footer
+    style={{
+      position: "absolute",
+      left: 120,
+      right: 120,
+      bottom: 34,
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      color: inkFaint,
+      fontSize: 18,
+      borderTop: `1px solid ${rule}`,
+      paddingTop: 14,
+    }}
+  >
+    <span>{part}</span>
+    <span style={{ textAlign: "center" }}>南京大学硕士论文答辩</span>
+    <span style={{ textAlign: "right" }}>{page} / {total}</span>
+  </footer>
+);
+
+const ClaimStrip = ({ children }: { children: React.ReactNode }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: 120,
+      right: 120,
+      bottom: 94,
+      minHeight: 70,
+      background: primary,
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      padding: "0 34px",
+      fontSize: 28,
+      lineHeight: 1.35,
+      fontWeight: 500,
+    }}
+  >
+    {children}
   </div>
+);
+
+const TitleSlide: Page = () => (
+  <CoverMaster thesisTitle="面向复杂任务的智能体协作方法研究" date="2026.04.26" presenter="李同学" />
 );
 
 const RoadmapSlide: Page = () => {
   const parts = [
-    ["01", "研究背景与意义", "问题从哪里来，现有方法缺什么"],
-    ["02", "关键技术与方法", "本文如何建模、设计并实现核心方法"],
-    ["03", "实验设计与分析", "RQ 如何被数据逐一回答"],
-    ["04", "总结与展望", "贡献如何回扣目标与证据"],
+    ["01", "研究背景与意义", "从真实痛点出发，明确研究缺口与目标"],
+    ["02", "关键技术与方法", "先给整体架构，再展开核心模块"],
+    ["03", "实验设计与分析", "按 RQ 组织证据，每页回答一个问题"],
+    ["04", "总结", "贡献、局限与未来工作闭环"],
   ];
 
   return (
-    <div style={{ ...pageBase, padding: "112px 128px 132px" }}>
-      <Eyebrow>Talk Roadmap</Eyebrow>
-      <h2
-        style={{
-          fontFamily: "var(--osd-font-display)",
-          fontSize: 68,
-          lineHeight: 1.15,
-          margin: "28px 0 56px",
-          color: "var(--osd-accent)",
-        }}
-      >
-        四段式结构把目标、方法、RQ 与贡献闭合起来
-      </h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 28,
-        }}
-      >
-        {parts.map(([num, title, note]) => (
+    <div style={{ ...pageBase, padding: "0 120px 180px" }}>
+      <PageHeader part="01" section="Talk Roadmap" title="四段式结构把目标、方法、实验和贡献闭合起来" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24, marginTop: 82 }}>
+        {parts.map(([num, title, desc], index) => (
           <div
             key={num}
             style={{
-              minHeight: 460,
               background: panel,
-              border: `2px solid ${rule}`,
-              padding: 34,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              border: `2px solid ${index === 0 ? primary : rule}`,
+              minHeight: 430,
+              padding: "34px 30px",
+              display: "grid",
+              gridTemplateRows: "auto auto 1fr",
+              boxShadow: index === 0 ? "0 18px 34px rgba(84, 0, 73, 0.14)" : "none",
             }}
           >
-            <div
-              style={{
-                fontFamily: "var(--osd-font-display)",
-                fontSize: 76,
-                fontWeight: 800,
-                color: primarySoft,
-              }}
-            >
-              {num}
-            </div>
-            <div>
-              <h3
-                style={{
-                  fontSize: 36,
-                  lineHeight: 1.25,
-                  margin: 0,
-                  color: "var(--osd-accent)",
-                }}
-              >
-                {title}
-              </h3>
-              <p
-                style={{
-                  fontSize: 28,
-                  lineHeight: 1.45,
-                  color: inkSoft,
-                  margin: "26px 0 0",
-                }}
-              >
-                {note}
-              </p>
-            </div>
+            <div style={{ color: primary, fontSize: 54, fontWeight: 700 }}>{num}</div>
+            <div style={{ marginTop: 30, color: ink, fontSize: 34, fontWeight: 700 }}>{title}</div>
+            <p style={{ alignSelf: "end", color: inkSoft, fontSize: 26, lineHeight: 1.45, margin: 0 }}>{desc}</p>
           </div>
         ))}
       </div>
-      <Footer part="目录" page={2} total={3} />
+      <ClaimStrip>学术型答辩不是复述论文，而是让评委快速看到：为什么做、怎么做、证据是什么、贡献在哪里。</ClaimStrip>
+      <Footer part="研究背景与意义" page={2} total={3} />
     </div>
   );
 };
 
 const ResultSlide: Page = () => {
-  const rows = [
-    ["Baseline A", "71.4", "#C8C2CA"],
-    ["Baseline B", "76.8", "#AFA8B3"],
-    ["本文方法", "84.6", "var(--osd-accent)"],
+  const bars = [
+    ["Baseline A", 72, inkFaint],
+    ["Baseline B", 78, inkFaint],
+    ["Ours", 91, primary],
   ];
 
   return (
-    <div style={{ ...pageBase, padding: "112px 128px 132px" }}>
-      <Eyebrow>Experiment Analysis</Eyebrow>
-      <h2
-        style={{
-          fontFamily: "var(--osd-font-display)",
-          fontSize: 64,
-          lineHeight: 1.16,
-          margin: "28px 0 46px",
-          color: "var(--osd-accent)",
-        }}
-      >
-        RQ1：本文方法在核心指标上优于主流基线
-      </h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.35fr 0.65fr",
-          gap: 56,
-          alignItems: "stretch",
-        }}
-      >
-        <div
-          style={{
-            background: panel,
-            border: `2px solid ${rule}`,
-            padding: "52px 56px",
-          }}
-        >
-          <div style={{ fontSize: 24, color: inkFaint, marginBottom: 36 }}>
-            指标：通过率（%） · 示例数据需替换为论文实验结果
-          </div>
-          <div style={{ display: "grid", gap: 32 }}>
-            {rows.map(([label, value, color]) => (
-              <div
-                key={label}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "210px 1fr 88px",
-                  gap: 24,
-                  alignItems: "center",
-                  fontSize: 26,
-                }}
-              >
-                <div style={{ color: inkSoft }}>{label}</div>
-                <div style={{ height: 34, background: "#F1EEF3" }}>
-                  <div
-                    style={{
-                      width: `${Number(value)}%`,
-                      height: "100%",
-                      background: color,
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    fontVariantNumeric: "tabular-nums",
-                    color: label === "本文方法" ? "var(--osd-accent)" : inkSoft,
-                    fontWeight: label === "本文方法" ? 800 : 500,
-                    textAlign: "right",
-                  }}
-                >
-                  {value}
-                </div>
-              </div>
-            ))}
-          </div>
+    <div style={{ ...pageBase, padding: "0 120px 180px" }}>
+      <PageHeader part="03" section="Experiment Design & Analysis" title="RQ1：协作规划显著提升复杂任务完成率" />
+      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 34, marginTop: 50 }}>
+        <div style={{ background: panel, border: `2px solid ${rule}`, padding: 34, minHeight: 550 }}>
+          <div style={{ color: primary, fontSize: 30, fontWeight: 700, marginBottom: 18 }}>任务完成率对比（%）</div>
+          <svg width="920" height="430" viewBox="0 0 920 430" role="img" aria-label="任务完成率柱状图">
+            <line x1="92" y1="338" x2="860" y2="338" stroke={rule} strokeWidth="2" />
+            <line x1="92" y1="58" x2="92" y2="338" stroke={rule} strokeWidth="2" />
+            {[0, 25, 50, 75, 100].map((tick) => {
+              const y = 338 - tick * 2.8;
+              return (
+                <g key={tick}>
+                  <line x1="86" y1={y} x2="860" y2={y} stroke={tick === 0 ? rule : "#ECE6EF"} strokeWidth="1" />
+                  <text x="68" y={y + 8} textAnchor="end" fontFamily={bodyFont} fontSize="22" fill={inkFaint}>
+                    {tick}
+                  </text>
+                </g>
+              );
+            })}
+            {bars.map(([label, value, color], index) => {
+              const x = 190 + index * 220;
+              const height = Number(value) * 2.8;
+              const y = 338 - height;
+              return (
+                <g key={label}>
+                  <rect x={x} y={y} width="110" height={height} fill={String(color)} />
+                  <text x={x + 55} y={y - 18} textAnchor="middle" fontFamily={bodyFont} fontSize="28" fontWeight="700" fill={String(color)}>
+                    {value}%
+                  </text>
+                  <text x={x + 55} y="386" textAnchor="middle" fontFamily={bodyFont} fontSize="22" fill={inkSoft}>
+                    {label}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
         </div>
-        <div
-          style={{
-            borderLeft: `6px solid ${positive}`,
-            background: primarySoft,
-            padding: "42px 38px",
-          }}
-        >
-          <h3 style={{ margin: 0, fontSize: 36, color: "var(--osd-accent)" }}>
-            解释口径
-          </h3>
-          <p style={{ fontSize: 28, lineHeight: 1.5, color: inkSoft }}>
-            结果页只回答一个 RQ。贡献用紫色突出，基线保持灰色；误差线、显著性和样本量按论文材料补齐。
-          </p>
-          <p style={{ fontSize: 22, lineHeight: 1.35, color: caution }}>
-            图中数值为主题示例，生成正式答辩时必须替换为真实实验数据。
-          </p>
+        <div style={{ display: "grid", gap: 20 }}>
+          {[
+            ["研究问题", "协作规划是否改善复杂任务完成率？"],
+            ["实验设置", "同一任务集、相同预算、三组方法对比。"],
+            ["解释", "紫色柱表示本文方法；灰色柱表示基线方法。"],
+          ].map(([label, text], index) => (
+            <div
+              key={label}
+              style={{
+                background: index === 0 ? primarySoft : panel,
+                border: `2px solid ${index === 0 ? primary : rule}`,
+                padding: "28px 30px",
+              }}
+            >
+              <div style={{ color: index === 0 ? primary : inkSoft, fontSize: 24, fontWeight: 700 }}>{label}</div>
+              <div style={{ marginTop: 14, color: ink, fontSize: 30, lineHeight: 1.42 }}>{text}</div>
+            </div>
+          ))}
         </div>
       </div>
+      <ClaimStrip>结果页必须用一张图或表直接回答一个 RQ，并把本文贡献与基线方法区分开。</ClaimStrip>
       <Footer part="实验设计与分析" page={3} total={3} />
     </div>
   );
