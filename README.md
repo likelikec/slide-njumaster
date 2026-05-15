@@ -138,6 +138,59 @@ pnpm build
 
 注意：`pnpm sync:skills` 只用于同步 `@open-slide/core` 提供的内置 skills。本项目新增的 `create-academic-defense-deck` 和 `create-engineering-defense-deck` 是项目本地 skills，不应当当作 upstream 内置 skills 处理。
 
+## 具体怎么使用
+
+本仓库有两种使用方式，二者不要混淆。
+
+### 方式一：只预览或修改已有幻灯片
+
+如果只是查看仓库里已经写好的答辩稿，例如 `slides/coactbot-defense/`，按普通 open-slide 项目使用即可：
+
+```bash
+pnpm install
+pnpm dev
+```
+
+然后在浏览器中打开终端输出的本地地址，进入 open-slide 页面后选择对应 slide。当前示例答辩稿位于：
+
+```text
+slides/coactbot-defense/index.tsx
+```
+
+这种方式不需要调用 skill，也不需要额外安装 open-slide 源码。
+
+### 方式二：让 AI 根据论文材料生成新答辩稿
+
+本项目新增的 `create-academic-defense-deck` 和 `create-engineering-defense-deck` 是 **AI agent skills**，不是 shell 命令，也不是 npm 脚本。也就是说，不要在终端里运行：
+
+```bash
+pnpm create-academic-defense-deck
+```
+
+正确用法是在 Codex、Claude Code 或其他支持本地 skill/agent 指令的工具中打开本仓库，然后用自然语言明确指定要使用哪个 skill。Agent 会读取：
+
+```text
+AGENTS.md
+.agents/skills/create-academic-defense-deck/SKILL.md
+.agents/skills/create-engineering-defense-deck/SKILL.md
+```
+
+如果使用 Claude Code，则会读取：
+
+```text
+CLAUDE.md
+.claude/skills/create-academic-defense-deck/SKILL.md
+.claude/skills/create-engineering-defense-deck/SKILL.md
+```
+
+推荐流程：
+
+1. 把论文、图表、实验表格、系统截图等材料放到 `thesis/`。
+2. 在 Codex / Claude Code 中打开本仓库根目录。
+3. 发送类似下面的指令，让 agent 调用对应 skill 生成或改写 deck。
+4. 生成后运行 `pnpm dev` 本地预览，确认页面内容和图片。
+5. 确认无误后运行 `pnpm build` 做构建检查。
+
 ## 使用 AI Skills 生成答辩稿
 
 本项目最适合与 Codex 或 Claude Code 配合使用。使用前建议先把论文材料、图片、实验表格、系统截图等放在本地工作区中，并注意不要把私人论文材料提交到公开仓库。
